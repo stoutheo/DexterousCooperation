@@ -68,11 +68,20 @@ public:
                          const MatNd* postures,
                          const double offset[3]);
 
+  ControllerBase* create(const ControllerBase* src,
+                         const std::vector<Adjacency>& adjacencies,
+                         const MatNd* postures,
+                         const std::vector<std::array<double, 3>>& offsets);
+
 protected:
 
   ControllerBase* createGraph(const ControllerBase* controller,
                               const MatNd* postures,
                               const double offset[3]);
+
+  ControllerBase* createGraph(const ControllerBase* controller,
+                              const MatNd* postures,
+                              const std::vector<std::array<double, 3>>& offsets);
 
   void eraseInactiveTasks(ControllerBase* controller, MatNd* activation);
 

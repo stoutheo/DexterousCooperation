@@ -126,6 +126,85 @@ ControllerBase* PoseGraph::create(const ControllerBase* src,
 }
 
 /*******************************************************************************
+ *
+ ******************************************************************************/
+ControllerBase* PoseGraph::create(const ControllerBase* src,
+                                  const std::vector<Adjacency>& adjacencies,
+                                  const MatNd* postures,
+                                  const std::vector<std::array<double, 3>>& offsets)
+{
+  MatNd* postureArray = NULL;
+
+  // If no postures array is passed, we create one with as many postures as
+  // there are steps in the adjacencies, all with the state of the graph.
+  if (postures == NULL)
+  {
+    size_t nPoses = 0;
+
+    for (size_t i=0; i<adjacencies.size(); ++i)
+    {
+      nPoses = std::max(nPoses, adjacencies[i].adjacencyList.size());
+    }
+
+    postureArray = MatNd_create(nPoses, src->getGraph()->dof);
+    postures = postureArray;
+
+    for (size_t i=0; i<nPoses; ++i)
+    {
+      double* row = MatNd_getRowPtr(postureArray, i);
+      VecNd_copy(row, src->getGraph()->q->ele, src->getGraph()->dof);
+    }
+  }
+
+  // Create the controller with a clone of the original controller for
+  // each posture.
+  ControllerBase* controller = createGraph(src, postures, offsets);
+
+  // Acquire the activation vector from the xml file so that we can also
+  // deal with inactive tasks.
+  MatNd* src_activations = MatNd_create(src->getNumberOfTasks(), 1);
+  src->readActivationsFromXML(src_activations);
+
+  // Create activation vector for the augmented controller by appending the
+  // activation vector to itself until the dinemsions match.
+  MatNd* activations = MatNd_clone(src_activations);
+
+  for (unsigned int i=0; i<postures->m-1; ++i)
+  {
+    MatNd_appendRows(activations, src_activations);
+  }
+
+  RCHECK_MSG(activations->m==controller->getNumberOfTasks(), "%u   %zu",
+             activations->m, controller->getNumberOfTasks());
+
+  // Connect joint constraints between poses
+  for (size_t i=0; i<adjacencies.size(); ++i)
+  {
+    linkBodyJoints(controller, adjacencies[i], activations);
+  }
+
+  // Relax constraints
+  for (size_t i=0; i<adjacencies.size(); ++i)
+  {
+    relax(controller, adjacencies[i], activations);
+  }
+
+  // Remove all inactive tasks. That's more a cosmetic step.
+  eraseInactiveTasks(controller, activations);
+
+  // Write config files
+  RcsGraph_writeXmlFile(controller->getGraph(), "PoseGraph.xml");
+  controller->toXML("cPoseGraph.xml", activations);
+
+  // Clean up
+  MatNd_destroy(postureArray);
+  MatNd_destroy(src_activations);
+  MatNd_destroy(activations);
+
+  return controller;
+}
+
+/*******************************************************************************
  * Constructs a new graph with as many poses as in there are rows in the
  * postures array.
  ******************************************************************************/
@@ -151,6 +230,40 @@ ControllerBase* PoseGraph::createGraph(const ControllerBase* src,
       char a[64];
       snprintf(a, 64, "_%zu", i);
       Vec3d_constMul(A_offset.org, offset, (double) i);
+      controller->add(&ci, a, &A_offset);
+    }
+
+  }
+
+  return controller;
+}
+
+/*******************************************************************************
+ * Constructs a new graph with as many poses as in there are rows in the
+ * postures array.
+ ******************************************************************************/
+ControllerBase* PoseGraph::createGraph(const ControllerBase* src,
+                                       const MatNd* postures,
+                                       const std::vector<std::array<double, 3>>& offsets)
+{
+  ControllerBase ci(*src);
+  ControllerBase* controller = new ControllerBase(*src);
+
+  HTr A_offset;
+  HTr_setIdentity(&A_offset);
+
+  RLOG_CPP(0, "Creating " << postures->m << " postures");
+
+  for (size_t i=0; i<postures->m; ++i)
+  {
+    MatNd q_i = MatNd_getRowViewTranspose(postures, i);
+    RcsGraph_setState(ci.getGraph(), &q_i, NULL);
+
+    if (i>0)
+    {
+      char a[64];
+      snprintf(a, 64, "_%zu", i);      
+      Vec3d_set(A_offset.org, offsets[i][0], offsets[i][1], offsets[i][2]);
       controller->add(&ci, a, &A_offset);
     }
 
