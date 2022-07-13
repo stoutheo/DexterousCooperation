@@ -1,0 +1,39 @@
+<Graph name="DefaultPose" resourcePath="${SIT}/Data/RobotMeshes/1.0/data" >
+
+  <Body name="Table" color="BRONZE" transform="0 0 0 0 0 0" >
+    <Joint name="bx" range="-2 0 2" weightJL="0" type="TransX" />
+    <Joint name="by" range="-2 0 2" weightJL="0" type="TransY" />
+    <Joint name="bz" range="-2 0 2" weightJL="0" type="TransZ" />
+    <Shape type="BOX" extents="0.7 1.0 0.02" distance="true" graphics="true" />
+  </Body>
+
+  <Body name="Bottle" prev="Table" transform="0 0 0.11 0 0 0" >
+      <Joint name="bottlex" range="-0.35  0  0.35" type="TransX" weightJL="0"/>
+      <Joint name="bottley" range="-0.5  0 0.5" type="TransY" weightJL="0"/>
+      <Joint name="bottlez" range="0 0 1" type="TransZ" weightJL="0"/>
+      <Shape type="CYLINDER" radius="0.05" length="0.2" color="PEWTER"
+	     graphics="true" resizeable="true" />
+      <Shape type="FRAME"  />
+    </Body>
+
+  <Body name="LeftHand" prev="Bottle" color="RED" transform="0 0.05 0 0 0 0">
+    <Joint name="rlx" range="-3  0  3" type="TransX" transform="0 0 0 0 0 0" />
+    <Joint name="rly" range="-2  0 2" type="TransY" />
+    <Joint name="rlz" range="-2 0 2" type="TransZ" />
+    <!-- <Joint name="rla" range="-400 0 400" type="RotX" /> -->
+    <!-- <Joint name="rlb" range="-400 0 400" type="RotY" /> -->
+    <!-- <Joint name="rlc" range="-400 0 400" type="RotZ" /> -->
+    <Shape type="SPHERE" radius="0.02" distance="true" graphics="true" />
+  </Body>
+
+  <Body name="RightHand" prev="Bottle" color="GREEN" transform="0 -0.05 0 0 0 0">
+    <Joint name="llx" range="-3  0  3" type="TransX" transform="0 0 0 0 0 0" />
+    <Joint name="lly" range="-2  0 2" type="TransY" />
+    <Joint name="llz" range="-2 0 2" type="TransZ" />
+    <!-- <Joint name="rla" range="-400 0 400" type="RotX" /> -->
+    <!-- <Joint name="rlb" range="-400 0 400" type="RotY" /> -->
+    <!-- <Joint name="rlc" range="-400 0 400" type="RotZ" /> -->
+    <Shape type="SPHERE" radius="0.02" distance="true" graphics="true" />
+  </Body>
+  
+</Graph>

@@ -306,7 +306,7 @@ static void testGenericPoseGraphCreation()
   if (argP.hasArgument("-h"))
   {
     RLOG(0, "Run:\n\nbin/TestPoseGraph -m 2 "
-         "-example <ex0, ex1, ex2, ex3, ex4>\n\n");
+         "-example <ex0, ex1, ex2, ex3, ex4 ex5>\n\n");
     return;
   }
 
@@ -314,6 +314,8 @@ static void testGenericPoseGraphCreation()
   std::vector<PoseGraph::Adjacency> adja;
   MatNd* postures = NULL;
   ControllerBase* seq = NULL;
+  std::vector<std::array<double, 3>> offset_list;
+
 
   if (example=="ex0")
   {
@@ -452,6 +454,62 @@ static void testGenericPoseGraphCreation()
     Vec3d_set(offset, 0.0, -1.5, 0.0);
 
     seq = poseGraph.create(&controller, adja, postures, offset);
+  }
+  else if (example=="ex5")
+  {
+    RLOG(0, "Creating table top scenario");
+    ControllerBase controller("cExample5.xml");
+    PoseGraph::Adjacency a;
+
+ 
+    a.bdyName = "LeftHand";
+    // a.adjacencyList = {-1, -1, 0, 2, -1}; 
+    a.adjacencyList = {-1, -1, 0, -1, 2, -1}; 
+    a.originalTask = "LeftHandRedXYZ";
+    a.relaxedTask = " ";
+    a.fixLastPose = false;
+    adja.push_back(a);
+
+    a.bdyName = "RightHand";
+    a.adjacencyList = {-1, -1, -1, 0, -1, 3}; 
+    // a.adjacencyList = {-1, -1, 0, -1, 2}; 
+    a.originalTask = "RightHandGreenXYZ";
+    a.relaxedTask = " ";
+    a.fixLastPose = false;
+    adja.push_back(a);
+
+
+    a.bdyName = "Bottle";
+    a.adjacencyList = {-1, 0, 1, 1, -1, -1}; 
+    // a.adjacencyList = {-1, -1, -1, 1, 1}; 
+    a.originalTask = "Bottle_poseXYZ";
+    a.relaxedTask = "Bottle_poseZ";
+    a.fixLastPose = false;
+    adja.push_back(a);
+
+
+    std::array<double, 3> offset;
+    offset = {0.0, 0.0, 0.0 };
+    offset_list.push_back(offset);
+    
+    offset = {0.0, -1.5, 0.0 };
+    offset_list.push_back(offset);
+    // offset = {-0.0, -2.0, 0.0 };
+    // offset_list.push_back(offset);
+
+    offset = {1.0, -3.0, 0.0 }; 
+    offset_list.push_back(offset);
+    offset = {-1.0, -3.0, 0.0 };
+    offset_list.push_back(offset);
+
+    offset = {1.0, -4.5, 0.0 }; 
+    offset_list.push_back(offset);
+    offset = {-1.0, -4.5, 0.0 };
+    offset_list.push_back(offset);
+ 
+    seq = poseGraph.create(&controller, adja, postures, offset_list);
+
+    // seq = poseGraph.create(&controller, adja, postures, offset);
   }
 
   RLOG(0, "Run:\n\nbin/Rcs -m 5 -f cPoseGraph.xml -algo 1 "
