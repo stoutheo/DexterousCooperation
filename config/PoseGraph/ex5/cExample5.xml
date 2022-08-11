@@ -23,7 +23,7 @@
       <xi:include href="gHumanModel.xml" />
     </Group >
 
-    <model_state model="DefaultPose" time_stamp="">
+    <!-- <model_state model="DefaultPose" time_stamp="">
       
       <joint_state joint="Base_jnt_Xposition" position="0.010088" />
       <joint_state joint="Base_jnt_Yposition" position="0.010065" />
@@ -81,7 +81,69 @@
       <joint_state joint="LeftToe_jnt_Xrotation" position="-2.190832" />
       <joint_state joint="LeftToe_jnt_Zrotation" position="0.137507" />
 
-    </model_state>
+    </model_state> -->
+
+    <model_state model="DefaultPose" time_stamp="">
+
+    <!-- <model_state model="Pose4Stick" time_stamp=""> -->
+      <joint_state joint="bottlex" position="-0.025302" />
+      <joint_state joint="bottley" position="0.117093" />
+      <joint_state joint="Base_jnt_Xposition" position="0.010088" />
+      <joint_state joint="Base_jnt_Yposition" position="0.010065" />
+      <joint_state joint="Hips_jnt_Yposition" position="0.929747" />
+      <joint_state joint="Hips_jnt_Xrotation" position="0.389262" />
+      <joint_state joint="Hips_jnt_Zrotation" position="0.959869" />
+      <joint_state joint="Chest_jnt_Yrotation" position="0.457719" />
+      <joint_state joint="Chest_jnt_Xrotation" position="-5.850808" />
+      <joint_state joint="Chest_jnt_Zrotation" position="1.18153" />
+      <joint_state joint="Chest2_jnt_Yrotation" position="0.33944" />
+      <joint_state joint="Chest2_jnt_Xrotation" position="-3.929297" />
+      <joint_state joint="Chest2_jnt_Zrotation" position="1.128148" />
+      <joint_state joint="Chest3_jnt_Yrotation" position="0.259747" />
+      <joint_state joint="Chest3_jnt_Xrotation" position="-2.564694" />
+      <joint_state joint="Chest3_jnt_Zrotation" position="1.078446" />
+      <joint_state joint="Chest4_jnt_Yrotation" position="0.208059" />
+      <joint_state joint="Chest4_jnt_Xrotation" position="-1.425513" />
+      <joint_state joint="Chest4_jnt_Zrotation" position="1.029377" />
+      <joint_state joint="RightCollar_jnt_Yrotation" position="-0.11905" />
+      <joint_state joint="RightCollar_jnt_Zrotation" position="-0.15849" />
+      <joint_state joint="RightShoulder_jnt_Yrotation" position="45.302053" />
+      <joint_state joint="RightShoulder_jnt_Zrotation" position="21.136548" />
+      <joint_state joint="RightShoulder_jnt_Xrotation" position="1.261912" />
+      <joint_state joint="RightElbow_jnt_Yrotation" position="15.341463" />
+      <joint_state joint="RightWrist_jnt_Xrotation" position="-0.0775" />
+      <joint_state joint="RightWrist_jnt_Zrotation" position="1.679537" />
+      <joint_state joint="RightWrist_jnt_Yrotation" position="0.4945" />
+      <joint_state joint="LeftCollar_jnt_Yrotation" position="0.789649" />
+      <joint_state joint="LeftCollar_jnt_Zrotation" position="3.635192" />
+      <joint_state joint="LeftShoulder_jnt_Yrotation" position="33.220355" />
+      <joint_state joint="LeftShoulder_jnt_Zrotation" position="0.149617" />
+      <joint_state joint="LeftShoulder_jnt_Xrotation" position="-6.604475" />
+      <joint_state joint="LeftElbow_jnt_Yrotation" position="-62.824744" />
+      <joint_state joint="LeftWrist_jnt_Xrotation" position="1.123403" />
+      <joint_state joint="LeftWrist_jnt_Zrotation" position="4.039086" />
+      <joint_state joint="LeftWrist_jnt_Yrotation" position="-2.231103" />
+      <joint_state joint="RightHip_jnt_Zrotation" position="-1.622697" />
+      <joint_state joint="RightHip_jnt_Xrotation" position="-18.339482" />
+      <joint_state joint="RightHip_jnt_Yrotation" position="-0.011178" />
+      <joint_state joint="RightKnee_jnt_Xrotation" position="35.411787" />
+      <joint_state joint="RightAnkle_jnt_Yrotation" position="0.047089" />
+      <joint_state joint="RightAnkle_jnt_Xrotation" position="-10.822808" />
+      <joint_state joint="RightAnkle_jnt_Zrotation" position="0.49922" />
+      <joint_state joint="RightToe_jnt_Yrotation" position="0.019047" />
+      <joint_state joint="RightToe_jnt_Xrotation" position="-6.638826" />
+      <joint_state joint="RightToe_jnt_Zrotation" position="0.147162" />
+      <joint_state joint="LeftHip_jnt_Zrotation" position="-1.618328" />
+      <joint_state joint="LeftHip_jnt_Xrotation" position="-18.166103" />
+      <joint_state joint="LeftHip_jnt_Yrotation" position="-0.006456" />
+      <joint_state joint="LeftKnee_jnt_Xrotation" position="34.829546" />
+      <joint_state joint="LeftAnkle_jnt_Yrotation" position="0.048655" />
+      <joint_state joint="LeftAnkle_jnt_Xrotation" position="-9.646672" />
+      <joint_state joint="LeftAnkle_jnt_Zrotation" position="0.497098" />
+      <joint_state joint="LeftToe_jnt_Yrotation" position="0.019396" />
+      <joint_state joint="LeftToe_jnt_Xrotation" position="-7.406122" />
+      <joint_state joint="LeftToe_jnt_Zrotation" position="0.146754" />
+    </model_state>  
 
     
   </Graph>
@@ -97,19 +159,22 @@
   <Task name="Bottle_poseXYZ" controlVariable= "XYZ" effector="Bottle" refBdy="Table" active="true" />
   <Task name="Bottle_poseZ" controlVariable= "Z" effector="Bottle" refBdy="Table" active="false" />
 
-  <!-- Tasks for the handles -->
+  <Task name="Handle_poseXYZ" controlVariable= "XYZ" effector="Handle" active="true" />
+
+
+  <!-- Tasks for the bottle -->
   <Task name="LeftHandRedXYZ" controlVariable= "XYZ" effector="LeftHand" refBdy="Bottle" active="true" />
   <Task name="RightHandGreenXYZ" controlVariable= "XYZ" effector="RightHand" refBdy="Bottle" active="true" />
   <Task name="LeftHandRedD" controlVariable= "Distance" effector="LeftHand" refBdy="Bottle" active="false" />
   <Task name="RightHandGreenD" controlVariable= "Distance" effector="RightHand" refBdy="Bottle" active="false" />
 
+  <!-- Tasks for the handle -->
+  <Task name="LeftHandHandleXYZABC" controlVariable= "XYZABC" effector="LeftHand" refBdy="Handle" active="false" />
 
 
   <!-- Human to the handles -->
   <Task name="1l" controlVariable="XYZ" effector="PartnerGrasp_L" refBdy="LeftHand" active="true" />
   <Task name="1r" controlVariable="XYZ" effector="PartnerGrasp_R" refBdy="RightHand" active="true" />
-
-  <Task name="ergo" controlVariable="StaticEffort" effector="PartnerGrasp_L" refBdy="Hips" active="true" />
 
 
   <Task name="2" controlVariable= "XYZABC" effector="RightToe" active="true" />

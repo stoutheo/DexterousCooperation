@@ -51,6 +51,9 @@
 #include <Rcs_math.h>
 #include <Rcs_guiFactory.h>
 #include <SegFaultHandler.h>
+#include <Rcs_utilsCPP.h>
+#include <Rcs_graphParser.h>
+
 
 #include <csignal>
 
@@ -510,6 +513,88 @@ static void testGenericPoseGraphCreation()
     seq = poseGraph.create(&controller, adja, postures, offset_list);
 
     // seq = poseGraph.create(&controller, adja, postures, offset);
+  }
+  else if (example=="ex6")
+  {
+    RLOG(0, "Creating table top scenario");
+    ControllerBase controller("cExample5.xml");
+    PoseGraph::Adjacency a;
+    
+
+    std::vector<std::string>  namess = RcsGraph_getModelStateNames(controller.getGraph());
+
+    MatNd* q_1 = MatNd_create(1, controller.getGraph()->dof);
+    MatNd* q_2 = MatNd_create(1, controller.getGraph()->dof);
+
+    // std::cout << namess[0] << "\n";
+    // std::cout << namess[1] << "\n";
+
+    bool success1,success2;
+    success1 = RcsGraph_getModelStateFromXML(q_1, controller.getGraph(), namess[0].c_str(), 0);
+    success2 = RcsGraph_getModelStateFromXML(q_2, controller.getGraph(), namess[1].c_str(), 0);
+
+    MatNd_transposeSelf(q_1); 
+    MatNd_transposeSelf(q_2); 
+    
+    MatNd* posturess = MatNd_create(5, controller.getGraph()->dof);
+    MatNd_reshape(posturess, 0, posturess->n);
+    MatNd_appendRows(posturess, q_1);
+    MatNd_appendRows(posturess, q_1);
+    MatNd_appendRows(posturess, q_1);
+    MatNd_appendRows(posturess, q_1);
+    MatNd_appendRows(posturess, q_1);
+    MatNd_appendRows(posturess, q_1);
+    MatNd_appendRows(posturess, q_2);
+    MatNd_destroy(q_1);
+    MatNd_destroy(q_2);
+
+
+    a.bdyName = "LeftHand";
+    a.adjacencyList = {-1, -1, 0, -1, 2, -1, -1}; 
+    a.originalTask = "LeftHandRedXYZ";
+    a.relaxedTask = " ";
+    a.fixLastPose = false;
+    adja.push_back(a);
+
+    a.bdyName = "RightHand";
+    a.adjacencyList = {-1, -1, -1, 0, -1, 3, 0}; 
+    a.originalTask = "RightHandGreenXYZ";
+    a.relaxedTask = " ";
+    a.fixLastPose = false;
+    adja.push_back(a);
+
+
+    a.bdyName = "Bottle";
+    a.adjacencyList = {-1, 0, 1, 1, -1, -1, -1}; 
+    a.originalTask = "Bottle_poseXYZ";
+    a.relaxedTask = "Bottle_poseZ";
+    a.fixLastPose = false;
+    adja.push_back(a);
+
+
+    std::array<double, 3> offset;
+    offset = {0.0, 0.0, 0.0 };
+    offset_list.push_back(offset);
+    
+    offset = {0.0, -1.5, 0.0 };
+    offset_list.push_back(offset);
+   
+    offset = {1.0, -3.0, 0.0 }; 
+    offset_list.push_back(offset);
+    offset = {-1.0, -3.0, 0.0 };
+    offset_list.push_back(offset);
+
+    offset = {1.0, -4.5, 0.0 }; 
+    offset_list.push_back(offset);
+    offset = {-1.0, -4.5, 0.0 };
+    offset_list.push_back(offset);
+    offset = {-3.0, -4.5, 0.0 };
+    offset_list.push_back(offset);
+ 
+    seq = poseGraph.create(&controller, adja, posturess, offset_list);
+    
+    MatNd_destroy(posturess);
+
   }
 
   RLOG(0, "Run:\n\nbin/Rcs -m 5 -f cPoseGraph.xml -algo 1 "

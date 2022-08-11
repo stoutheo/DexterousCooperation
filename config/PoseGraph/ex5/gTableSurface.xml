@@ -7,6 +7,18 @@
     <Shape type="BOX" extents="0.7 1.0 0.02" distance="true" graphics="true" />
   </Body>
 
+  <Body name="Handle" prev="Table" transform="-0.5 0.3 -0.2 0 0 0" >
+      <Joint name="handlex" range="-0.35  0  0.35" type="TransX" weightJL="0"/>
+      <Joint name="handley" range="-0.5  0 0.5" type="TransY" weightJL="0"/>
+      <Joint name="handlez" range="0 0 1" type="TransZ" weightJL="0"/>
+      <Shape type="CYLINDER" radius="0.025" length="0.2" color="YELLOW"
+	     graphics="true" resizeable="true" transform="-0. 0. -0. 0 90 0" />
+      <Shape type="CYLINDER" radius="0.025" length="0.8" color="YELLOW"
+	     graphics="true" resizeable="true" transform="-0. 0. -0.4 0 0 0" />
+      <Shape type="FRAME"  />
+    </Body>
+
+
   <Body name="Bottle" prev="Table" transform="0 0 0.11 0 0 0" >
       <Joint name="bottlex" range="-0.35  0  0.35" type="TransX" weightJL="0"/>
       <Joint name="bottley" range="-0.5  0 0.5" type="TransY" weightJL="0"/>
